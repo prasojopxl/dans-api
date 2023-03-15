@@ -47,7 +47,6 @@ const getData = async (req, res, next) => {
 // Filter data
 const filterData = async (req, res, next) => {
     try {
-
         const addData = await joblists.findAll({
             where: req.query.type && req.query.location && req.query.title ? {
                 [Op.and]: [
@@ -69,7 +68,7 @@ const filterData = async (req, res, next) => {
                     { type: req.query.type },
                     {
                         title: {
-                            [Op.like]: `${req.query.title}%`
+                            [Op.like]: `%${req.query.title}` || `${req.query.title}%`
                         }
                     }
                 ]
@@ -78,7 +77,7 @@ const filterData = async (req, res, next) => {
                     { location: req.query.location },
                     {
                         title: {
-                            [Op.like]: `${req.query.title}%`
+                            [Op.like]: `%${req.query.title}` || `${req.query.title}%`
                         }
                     }
                 ]
@@ -94,7 +93,7 @@ const filterData = async (req, res, next) => {
                 [Op.and]: [
                     {
                         title: {
-                            [Op.like]: `${req.query.title}%`
+                            [Op.like]: `%${req.query.title}` || `${req.query.title}%`
                         }
                     }
                 ]
