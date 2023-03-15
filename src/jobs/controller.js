@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express()
 const { joblists } = require("../../models")
+const { Op } = require("sequelize");
+
 const postData = async (req, res, next) => {
     try {
         const body = req.body
@@ -24,13 +26,44 @@ const postData = async (req, res, next) => {
     }
 }
 
+// get all data
 const getData = async (req, res, next) => {
     try {
         const addData = await joblists.findAll({
             limit: req.query.limit ? parseInt(req.query.limit) : null,
             offset: req.query.page ? parseInt(req.query.page) * parseInt(req.query.limit) - parseInt(req.query.limit) : null
         })
-        return res.json({
+        return res.status(200).json({
+            data: addData,
+            limit: req.query.limit ? parseInt(req.query.limit) : null,
+            offset: req.query.page ? parseInt(req.query.page) * parseInt(req.query.limit) - parseInt(req.query.limit) : null,
+            page: req.query.page
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+// Filter data
+const filterData = async (req, res, next) => {
+    try {
+
+        const addData = await joblists.findAll({
+            where: {
+                [Op.and]: [
+                    { type: req.query.type },
+                    { location: req.query.location },
+                    {
+                        title: {
+                            [Op.like]: `${req.query.title}%`
+                        }
+                    }
+                ]
+            },
+            limit: req.query.limit ? parseInt(req.query.limit) : null,
+            offset: req.query.page ? parseInt(req.query.page) * parseInt(req.query.limit) - parseInt(req.query.limit) : null
+        })
+        return res.status(200).json({
             data: addData,
             limit: req.query.limit ? parseInt(req.query.limit) : null,
             offset: req.query.page ? parseInt(req.query.page) * parseInt(req.query.limit) - parseInt(req.query.limit) : null,
@@ -60,4 +93,4 @@ const getDataID = async (req, res, next) => {
 
 
 
-module.exports = { postData, getData, getDataID }
+module.exports = { postData, getData, getDataID, filterData }
