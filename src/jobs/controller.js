@@ -49,7 +49,7 @@ const filterData = async (req, res, next) => {
     try {
 
         const addData = await joblists.findAll({
-            where: {
+            where: req.query.type && req.query.location && req.query.title ? {
                 [Op.and]: [
                     { type: req.query.type },
                     { location: req.query.location },
@@ -59,7 +59,46 @@ const filterData = async (req, res, next) => {
                         }
                     }
                 ]
-            },
+            } : req.query.type && req.query.location ? {
+                [Op.and]: [
+                    { type: req.query.type },
+                    { location: req.query.location },
+                ]
+            } : req.query.type && req.query.title ? {
+                [Op.and]: [
+                    { type: req.query.type },
+                    {
+                        title: {
+                            [Op.like]: `${req.query.title}%`
+                        }
+                    }
+                ]
+            } : req.query.location && req.query.title ? {
+                [Op.and]: [
+                    { location: req.query.location },
+                    {
+                        title: {
+                            [Op.like]: `${req.query.title}%`
+                        }
+                    }
+                ]
+            } : req.query.type ? {
+                [Op.and]: [
+                    { type: req.query.type },
+                ]
+            } : req.query.location ? {
+                [Op.and]: [
+                    { location: req.query.location },
+                ]
+            } : req.query.title ? {
+                [Op.and]: [
+                    {
+                        title: {
+                            [Op.like]: `${req.query.title}%`
+                        }
+                    }
+                ]
+            } : null,
             limit: req.query.limit ? parseInt(req.query.limit) : null,
             offset: req.query.page ? parseInt(req.query.page) * parseInt(req.query.limit) - parseInt(req.query.limit) : null
         })
