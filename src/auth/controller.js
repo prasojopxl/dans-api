@@ -100,4 +100,4 @@ const loginData = async (req, res, next) => {
 }
 
 
-module.exports = { postData, putData, deleteData, loginData }
+module.exports = { postData, deleteData, loginData }

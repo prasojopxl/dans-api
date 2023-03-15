@@ -30,6 +30,12 @@ module.exports = {
       description: {
         type: Sequelize.TEXT
       },
+      how_to_apply: {
+        type: Sequelize.TEXT
+      },
+      company_logo: {
+        type: Sequelize.TEXT
+      },
       status: {
         type: Sequelize.BOOLEAN
       },

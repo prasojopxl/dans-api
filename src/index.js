@@ -9,6 +9,7 @@ const verifyToken = require("../middlewares/verify-token");
 //route user
 const routeUsers = require("./users/index")
 const routeAuth = require("./auth/index")
+const routeJobs = require("./jobs/index")
 
 const app = express()
 dotenv.config()
@@ -39,6 +40,7 @@ app.get("/", (req, res) => {
 })
 app.use("/users", verifyToken, routeUsers)
 app.use("/auth", routeAuth)
+app.use("/jobs", verifyToken, routeJobs)
 
 // menjalankan aplikasi
 const port = process.env.APP_PORT || 7002
