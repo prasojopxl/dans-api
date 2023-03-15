@@ -1,6 +1,8 @@
 const { users } = require("../../models")
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { validationResult } = require('express-validator');
+
 
 // post Data
 const postData = async (req, res, next) => {
@@ -75,7 +77,13 @@ const deleteData = async (req, res, next) => {
 }
 
 //Login
+
 const loginData = async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     try {
         const body = req.body;
         const user = await users.findOne({
@@ -94,6 +102,8 @@ const loginData = async (req, res, next) => {
                 message: "password incorrect"
             })
         }
+
+
         const data = {
             id: user.id,
             email: user.email,
