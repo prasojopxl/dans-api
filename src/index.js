@@ -4,6 +4,7 @@ const router = express()
 const dotenv = require("dotenv")
 const cors = require("cors")
 const { urlencoded, json } = require("express")
+const verifyToken = require("../middlewares/verify-token");
 
 //route user
 const routeUsers = require("./users/index")
@@ -36,7 +37,7 @@ app.get("/", (req, res) => {
         message: "welcome "
     })
 })
-app.use("/users", routeUsers)
+app.use("/users", verifyToken, routeUsers)
 app.use("/auth", routeAuth)
 
 // menjalankan aplikasi

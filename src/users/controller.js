@@ -21,9 +21,9 @@ const postData = async (req, res, next) => {
 const getData = async (req, res, next) => {
     const getData = await users.findAll()
     try {
-        res.status(200).json({
-            data: getData
-        });
+        res.status(200).json(
+            getData
+        );
     } catch (error) {
         console.log(error)
     }

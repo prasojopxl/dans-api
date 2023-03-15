@@ -77,7 +77,6 @@ const deleteData = async (req, res, next) => {
 }
 
 //Login
-
 const loginData = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
