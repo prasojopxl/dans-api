@@ -15,7 +15,7 @@ const app = express()
 dotenv.config()
 
 // setup cors
-let whitelist = ["http://localhost:3000"]
+let whitelist = ["http://localhost:3000", "https://dans-front.vercel.app", "https://dans-front.stagingaja.com"]
 let corsOptions = {
     origin: function (origin, callback) {
         if (whitelist.indexOf(origin) !== -1 || !origin) {
