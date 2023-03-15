@@ -41,5 +41,23 @@ const getData = async (req, res, next) => {
     }
 }
 
+// get By ID
+const getDataID = async (req, res, next) => {
+    try {
+        const { id } = req.params
+        const jobId = await joblists.findOne({
+            where: {
+                id: id
+            },
+        })
+        res.status(200).json({
+            data: jobId
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
 
-module.exports = { postData, getData }
+
+
+module.exports = { postData, getData, getDataID }
